@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anamnese Veterinária</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #27ae60;
+            --bg: #f4f7f6;
+            --text: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--secondary);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+        }
+
+        h1 { color: var(--primary); margin: 0; }
+
+        fieldset {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            padding: 15px;
+        }
+
+        legend {
+            font-weight: bold;
+            color: var(--secondary);
+            padding: 0 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        input, select, textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+
+        textarea { resize: vertical; min-height: 80px; }
+
+        .btn-container {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: var(--secondary);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #219150;
+        }
+
+        @media (max-width: 600px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Ficha de Anamnese Veterinária</h1>
+        <p>Preencha os dados clínicos do paciente</p>
+    </header>
+
+    <form id="anamneseForm">
+        <fieldset>
+            <legend>Identificação do Tutor</legend>
+            <div class="grid">
+                <div class="form-group">
+                    <label for="tutorNome">Nome Completo</label>
+                    <input type="text" id="tutorNome" required>
+                </div>
+                <div class="form-group">
+                    <label for="tutorTel">Telefone/WhatsApp</label>
+                    <input type="tel" id="tutorTel" placeholder="(00) 00000-0000" required>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Identificação do Paciente</legend>
+            <div class="grid">
+                <div class="form-group">
+                    <label for="petNome">Nome do Animal</label>
+                    <input type="text" id="petNome" required>
+                </div>
+                <div class="form-group">
+                    <label for="especie">Espécie</label>
+                    <select id="especie">
+                        <option value="canino">Canino</option>
+                        <option value="felino">Felino</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="raca">Raça</label>
+                    <input type="text" id="raca">
+                </div>
+                <div class="form-group">
+                    <label for="idade">Idade (Aproximada)</label>
+                    <input type="text" id="idade">
+                </div>
+                <div class="form-group">
+                    <label for="peso">Peso (kg)</label>
+                    <input type="number" id="peso" step="0.1">
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Queixa Principal e Histórico</legend>
+            <div class="form-group">
+                <label for="queixa">Motivo da Consulta / Sintomas</label>
+                <textarea id="queixa" placeholder="Descreva o que o animal está sentindo e há quanto tempo..." required></textarea>
+            </div>
+            <div class="form-group" style="margin-top: 15px;">
+                <label for="historico">Histórico de Doenças/Cirurgias Pregressas</label>
+                <textarea id="historico"></textarea>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Manejo e Prevenção</legend>
+            <div class="grid">
+                <div class="form-group">
+                    <label for="vacina">Vacinação em dia?</label>
+                    <select id="vacina">
+                        <option value="sim">Sim</option>
+                        <option value="nao">Não</option>
+                        <option value="incompleta">Incompleta</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dieta">Tipo de Alimentação</label>
+                    <input type="text" id="dieta" placeholder="Ex: Ração seca, Natural...">
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="btn-container">
+            <button type="submit" id="btnSalvar">Finalizar Anamnese</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.getElementById('anamneseForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Coleta de dados simples para demonstração
+        const formData = {
+            tutor: document.getElementById('tutorNome').value,
+            pet: document.getElementById('petNome').value,
+            queixa: document.getElementById('queixa').value,
+            dataHora: new Date().toLocaleString()
+        };
+
+        console.log('Dados Coletados:', formData);
+
+        // Feedback visual
+        alert(`Anamnese de ${formData.pet} (Tutor: ${formData.tutor}) salva com sucesso!\nVerifique o console (F12) para ver o JSON.`);
+        
+        // Opcional: Limpar formulário
+        // this.reset();
+    });
+</script>
+
+</body>
+</html>
